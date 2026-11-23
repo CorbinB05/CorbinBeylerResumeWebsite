@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A small Japanese phrase recall practice app.">
+  <title>Japanese Phrase Lab</title>
+  <style>
+    :root { color-scheme: light; --ink: #183b3b; --leaf: #28665d; --mint: #d8eee1; --paper: #fbf8f1; --warm: #bd7045; }
+    * { box-sizing: border-box; }
+    body { min-height: 100vh; margin: 0; padding: 1.25rem; color: #203330; background: radial-gradient(circle at 15% 5%, #d6ead9, transparent 35%), var(--paper); font-family: Inter, "Segoe UI", Arial, sans-serif; }
+    main { width: min(100%, 760px); margin: 2rem auto; }
+    header { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+    header a { color: var(--leaf); font-weight: 700; }
+    .eyebrow { margin: 0 0 .45rem; color: var(--leaf); font-size: .75rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+    h1 { margin: 0; color: var(--ink); font-size: clamp(2.2rem, 7vw, 3.4rem); letter-spacing: -.05em; }
+    .intro { max-width: 42rem; color: #52635c; }
+    .app-card { margin-top: 1.5rem; padding: clamp(1.1rem, 4vw, 2rem); background: #fff; border: 1px solid #d5e2d8; border-radius: 1.1rem; box-shadow: 0 1rem 2.8rem #163d3218; }
+    .app-top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .75rem; padding-bottom: 1rem; border-bottom: 1px solid #e5ece6; color: #5a6c64; font-size: .9rem; }
+    .prompt { margin: 1.6rem 0 .25rem; color: var(--ink); font-size: 1rem; }
+    .phrase { margin: 0; color: var(--ink); font-size: clamp(2rem, 8vw, 3rem); font-weight: 750; letter-spacing: -.04em; line-height: 1.7; }
+    .phrase ruby { ruby-position: over; }
+    .phrase rt { color: #60726a; font-size: .42em; font-weight: 600; letter-spacing: 0; }
+    .romaji { min-height: 1.7rem; margin: -.15rem 0 1.5rem; color: #65776e; font-size: .98rem; line-height: 1.3; }
+    .options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
+    button { font: inherit; cursor: pointer; }
+    .answer { min-height: 3.2rem; padding: .75rem 1rem; color: var(--ink); background: #f8faf7; border: 1px solid #d8e3dc; border-radius: .65rem; text-align: left; transition: background .15s, transform .15s; }
+    .answer:hover:not(:disabled), .answer:focus-visible { background: var(--mint); transform: translateY(-1px); }
+    .answer:focus-visible, .next:focus-visible, .reset:focus-visible { outline: 3px solid #de9b64; outline-offset: 2px; }
+    .answer.correct { background: #d8eee1; border-color: #6fa887; }
+    .answer.wrong { background: #f8dfd3; border-color: #d08a68; }
+    .feedback { min-height: 2rem; margin: 1rem 0 .75rem; color: #43564e; font-weight: 650; }
+    .controls { display: flex; flex-wrap: wrap; gap: .65rem; }
+    .next, .reset { padding: .72rem 1rem; border: 0; border-radius: .55rem; font-weight: 700; }
+    .next { color: #fff; background: var(--leaf); }
+    .next:disabled { cursor: not-allowed; opacity: .45; }
+    .reset { color: var(--ink); background: var(--mint); }
+    .progress-track { height: .45rem; margin-top: 1.25rem; overflow: hidden; background: #e7eee8; border-radius: 1rem; }
+    .progress-bar { width: 0; height: 100%; background: linear-gradient(90deg, #62a880, #e29a60); transition: width .25s; }
+    .tip { margin: 1rem 0 0; color: #687770; font-size: .84rem; }
+    footer { margin-top: 1.5rem; color: #60726a; font-size: .85rem; }
+    footer a { color: var(--leaf); }
+    @media (max-width: 520px) { .options { grid-template-columns: 1fr; } main { margin-top: .5rem; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header><div><p class="eyebrow">A tiny recall game</p><h1>Japanese Phrase Lab</h1></div><a href="japanese.html">← Back to Japanese page</a></header>
+    <p class="intro">Practice meaning and recall with useful Japanese phrases. Choose a translation, build a streak, and repeat the phrases you miss.</p>
+    <section class="app-card" aria-labelledby="prompt-label">
+      <div class="app-top"><span id="round-label">Round 1 of 8</span><span>Score: <strong id="score">0</strong> · Best streak: <strong id="streak">0</strong></span></div>
+      <p class="prompt" id="prompt-label">What does this phrase mean?</p>
+      <p class="phrase" id="phrase" lang="ja">おはようございます</p>
+      <p class="romaji" id="romaji" aria-label="Romanized pronunciation">ohayō gozaimasu</p>
+      <p class="tip">Furigana above kanji shows its reading; romaji below shows how to pronounce the full phrase.</p>
+      <div class="options" id="options" role="group" aria-label="Choose the English meaning"></div>
+      <p class="feedback" id="feedback" aria-live="polite">Choose the closest meaning.</p>
+      <div class="controls"><button class="next" id="next" type="button" disabled>Next phrase →</button><button class="reset" id="reset" type="button">Start over</button></div>
+      <div class="progress-track" aria-hidden="true"><div class="progress-bar" id="progress"></div></div>
+      <p class="tip">Tip: Read the phrase aloud before choosing. In real conversation, tone and context matter too.</p>
+    </section>
+    <footer><p>Includes standard Japanese and a Kansai expression. <a href="https://www.jpf.go.jp/e/project/japanese/education/online/" target="_blank" rel="noopener noreferrer">The Japan Foundation's online learning resources ↗</a></p></footer>
+  </main>
+  <script>
+    const deck = [
+      { display: "おはようございます", romaji: "ohayō gozaimasu", en: "Good morning (polite)", group: "Everyday" },
+      { display: "ありがとうございます", romaji: "arigatō gozaimasu", en: "Thank you (polite)", group: "Everyday" },
+      { display: "よろしくお<ruby>願<rt>ねが</rt></ruby>いします", romaji: "yoroshiku onegaishimasu", en: "Please treat me well / I look forward to working with you", group: "Everyday" },
+      { display: "もう<ruby>一度<rt>いちど</rt></ruby>お<ruby>願<rt>ねが</rt></ruby>いします", romaji: "mō ichido onegaishimasu", en: "One more time, please", group: "Useful" },
+      { display: "ゆっくり<ruby>話<rt>はな</rt></ruby>してください", romaji: "yukkuri hanashite kudasai", en: "Please speak slowly", group: "Useful" },
+      { display: "お<ruby>元気<rt>げんき</rt></ruby>ですか", romaji: "ogenki desu ka", en: "How are you?", group: "Everyday" },
+      { display: "めっちゃおいしい", romaji: "meccha oishii", en: "Really delicious (casual Kansai-style expression)", group: "Kansai" },
+      { display: "おおきに", romaji: "ōkini", en: "Thanks (Kansai dialect)", group: "Kansai" },
+      { display: "<ruby>駅<rt>えき</rt></ruby>はどこですか", romaji: "eki wa doko desu ka", en: "Where is the station?", group: "Useful" },
+      { display: "<ruby>大丈夫<rt>だいじょうぶ</rt></ruby>です", romaji: "daijōbu desu", en: "It's okay / I'm all right", group: "Everyday" }
+    ];
+    const roundSize = 8;
+    let questions = [], current = 0, score = 0, streak = 0, bestStreak = 0, answered = false;
+    const phrase = document.querySelector("#phrase"), romaji = document.querySelector("#romaji"), options = document.querySelector("#options"), feedback = document.querySelector("#feedback"), next = document.querySelector("#next");
+    const shuffled = list => [...list].sort(() => Math.random() - .5);
+    function startGame() {
+      questions = shuffled(deck).slice(0, roundSize); current = 0; score = 0; streak = 0; bestStreak = 0; next.textContent = "Next phrase →";
+      document.querySelector("#score").textContent = score; document.querySelector("#streak").textContent = bestStreak;
+      renderQuestion();
+    }
+    function renderQuestion() {
+      answered = false; next.disabled = true;
+      const item = questions[current]; phrase.innerHTML = item.display; romaji.textContent = item.romaji;
+      document.querySelector("#round-label").textContent = `Round ${current + 1} of ${roundSize} · ${item.group}`;
+      document.querySelector("#progress").style.width = `${current / roundSize * 100}%`;
+      feedback.textContent = "Choose the closest meaning.";
+      const distractors = shuffled(deck.filter(entry => entry.en !== item.en)).slice(0, 3).map(entry => entry.en);
+      const choices = shuffled([item.en, ...distractors]);
+      options.innerHTML = "";
+      choices.forEach(choice => {
+        const button = document.createElement("button"); button.type = "button"; button.className = "answer"; button.textContent = choice;
+        button.addEventListener("click", () => checkAnswer(button, choice, item.en)); options.appendChild(button);
+      });
+    }
+    function checkAnswer(button, choice, answer) {
+      if (answered) return; answered = true;
+      document.querySelectorAll(".answer").forEach(option => { option.disabled = true; if (option.textContent === answer) option.classList.add("correct"); });
+      if (choice === answer) { score++; streak++; bestStreak = Math.max(bestStreak, streak); feedback.textContent = "Correct. Nice recall!"; }
+      else { streak = 0; button.classList.add("wrong"); feedback.textContent = `Not quite. The answer is: ${answer}`; }
+      document.querySelector("#score").textContent = score; document.querySelector("#streak").textContent = bestStreak;
+      document.querySelector("#progress").style.width = `${(current + 1) / roundSize * 100}%`;
+      next.disabled = false;
+      if (current === roundSize - 1) next.textContent = "See results →";
+    }
+    next.addEventListener("click", () => {
+      if (current < roundSize - 1) { current++; next.textContent = "Next phrase →"; renderQuestion(); }
+      else { phrase.textContent = `${score} / ${roundSize}`; romaji.textContent = ""; options.innerHTML = ""; document.querySelector("#round-label").textContent = "Round complete"; feedback.textContent = score >= 6 ? "Great work. Try another round to strengthen recall." : "Good practice. Review the missed phrases and try again."; next.disabled = true; document.querySelector("#progress").style.width = "100%"; }
+    });
+    document.querySelector("#reset").addEventListener("click", startGame);
+    startGame();
+  </script>
+</body>
+</html>

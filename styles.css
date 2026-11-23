@@ -1,0 +1,43 @@
+/* Bootstrap handles the base grid and responsive components; these rules set the portfolio's visual identity. */
+:root { --ink: #192632; --navy: #142c3d; --teal: #59c3b3; --mist: #f1f6f5; --muted: #657681; }
+html { scroll-behavior: smooth; }
+body { color: var(--ink); font-family: Inter, "Segoe UI", Arial, sans-serif; }
+a { color: #087f78; }
+a:hover { color: #075b58; text-decoration-thickness: 2px; }
+a:visited { color: #5c4a83; }
+.site-navbar { background: var(--navy); box-shadow: 0 3px 15px #0a1b2930; }
+.site-navbar .nav-link { color: #ecf4f3; }
+.site-navbar .nav-link:hover, .site-navbar .nav-link:focus { color: var(--teal); }
+.brand-dot { color: var(--teal); }
+.hero-section { color: white; background: linear-gradient(125deg, #142c3d 0%, #1d4b57 65%, #277b76 100%); }
+.py-lg-6 { padding-top: 6rem; padding-bottom: 6rem; }
+.display-3 { letter-spacing: -.055em; line-height: .98; }
+.hero-lead { max-width: 39rem; color: #e0ecec; }
+.eyebrow { color: #108579; font-size: .75rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+.hero-section .eyebrow { color: #85e2d2; }
+.btn-primary { --bs-btn-bg: #1e9388; --bs-btn-border-color: #1e9388; --bs-btn-hover-bg: #16796f; --bs-btn-hover-border-color: #16796f; }
+.btn-outline-light:hover { color: var(--navy); }
+.portrait { width: min(100%, 21rem); max-height: 25rem; object-fit: cover; object-position: center 30%; border: 8px solid #ffffff25; border-radius: 48% 48% 1.5rem 1.5rem; box-shadow: 0 1.5rem 3rem #071c2c55; }
+.section-heading h2 { letter-spacing: -.035em; }
+.resume-card { padding: 1.5rem; background: white; border: 1px solid #dce6e5; border-radius: 1rem; box-shadow: 0 .5rem 1.5rem #19333b0b; }
+.section-soft { background: var(--mist); }
+.date-label { flex: 0 0 auto; color: var(--muted); font-size: .82rem; text-align: right; }
+.role-label { margin-bottom: 0; color: var(--muted); font-size: .9rem; }
+.resume-bullets { margin: 1rem 0 0; padding-left: 1.2rem; color: #465760; }
+.resume-bullets li + li { margin-top: .45rem; }
+.skill-cloud { display: flex; flex-wrap: wrap; gap: .65rem; }
+.skill-cloud span { padding: .7rem 1rem; background: var(--mist); border: 1px solid #dce8e6; border-radius: 999px; font-size: .95rem; }
+.closing-band { color: white; background: #1c5155; }
+.closing-band .eyebrow { color: #9de3d7; }
+.site-footer { color: #60717a; background: #f7f9f9; font-size: .9rem; }
+.site-footer a { color: #087f78; }
+.service-hero { background: var(--mist); }
+.service-entry { padding: 1.2rem 0; border-bottom: 1px solid #dce6e5; }
+.service-entry:last-child { border-bottom: 0; }
+.service-entry h3 { font-size: 1.05rem; }
+.service-entry .date-label { color: #657681; }
+@media (max-width: 575.98px) {
+  .resume-card { padding: 1.15rem; }
+  .date-label { white-space: normal; font-size: .75rem; }
+  .hero-section .btn { width: 100%; }
+}
