@@ -37,16 +37,6 @@ The Japanese learner comparison uses the Japan Foundation's FY2021 and FY2024 ov
 
 The discussion of possible cognitive benefits is cautious because research findings vary. The page links to the British Academy and International Baccalaureate reviews for more detail. The page also cites the Japan Foundation and Japan's Ministry of Foreign Affairs for Japanese-learning context. The おおきに section uses a video about Osaka speakers' views on how often the expression is used and includes a direct YouTube link as a fallback if the embedded player cannot load.
 
-## Review before submitting or publishing
-
-Some resume bullets are polished drafts based on the roles and dates provided and typical responsibilities. Confirm that each bullet accurately describes what you personally did, especially BYU IT Surplus, office cleaning, landscaping, and church leadership. Add your BYU major and expected graduation date if you want them listed. High school is omitted because the resume currently includes college education.
-
-The class instructions recommend replacing personal contact information for a school-only public project. No email, phone number, or home address is included. Review the portrait and resume content before publishing online.
-
-## Publishing notes
-
-For GitHub Pages, upload the **contents of this folder** to the repository root so `index.html` is at the top level. Keep capitalization and the `assets/` folder intact. The Bootstrap CSS/JavaScript, Tableau dashboard, YouTube embed, and source links need internet access. Verify the pages in a desktop-sized and phone-sized browser window before submission, and check the public site after GitHub Pages finishes publishing.
-
 ## Sources
 
 - [Bootstrap 5.3 documentation](https://getbootstrap.com/docs/5.3/getting-started/introduction/)
